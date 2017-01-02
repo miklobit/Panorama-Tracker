@@ -182,7 +182,7 @@ def calculate_orientation(scene):
     if not movieclip: return (0,0,0)
 
     settings = movieclip.panorama_settings
-
+    set_horizon = settings.set_horizon
     tracking = movieclip.tracking.objects[movieclip.tracking.active_object_index]
     focus = tracking.tracks.get(settings.focus)
     target = tracking.tracks.get(settings.target)
@@ -207,11 +207,11 @@ def calculate_orientation(scene):
     # retarget y axis again
     nvecy = vecz.cross(vecx)
     nvecy.normalize()
-
+  
     # store orientation
     orientation = sphere_to_euler(vecx, nvecy, vecz)
-    orientation = (settings.orientation.to_matrix() * orientation.to_matrix()).to_euler()
-
+    if set_horizon == False:
+        orientation = (settings.orientation.to_matrix() * orientation.to_matrix()).to_euler()        
     return (-orientation[0], -orientation[1], -orientation[2])
 
 
@@ -470,6 +470,7 @@ def update_panorama_orientation(scene):
         tex_env.texture_mapping.rotation = mapping_node_order_flip(orientation)
 
 
+
 def mapping_node_order_flip(orientation):
     """
     Flip euler order of mapping shader node
@@ -491,6 +492,7 @@ class TrackingPanoramaSettings(bpy.types.PropertyGroup):
     target = StringProperty()
     flip = BoolProperty(default=True)
     show_preview = BoolProperty(default=False, name="Show Preview", update=show_preview_update)
+    set_horizon = BoolProperty(default=False, name="Set horizon")
 
 
 # ###############################
