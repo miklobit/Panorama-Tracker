@@ -52,6 +52,8 @@ class CLIP_PanoramaPanel(bpy.types.Panel):
         col.separator()
         col.prop(settings, "show_preview")
 
+        col.separator()
+        col.prop(settings, "set_horizon")
 
 # ###############################
 #  Register / Unregister
@@ -61,4 +63,4 @@ def register():
 
 
 def unregister():
-    bpy.utils.unregister_class(CLIP_PanoramaPanel)
+    bpy.utils.unregister_class(CLIP_PanoramaPanel) 
